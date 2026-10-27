@@ -2,20 +2,13 @@ from fastapi import FastAPI, HTTPException, status, Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session 
 
-from database import SessionLocal, Base, engine
+from database import Base, engine, get_db
 import models
 from schemas import Book, BookCreate, BookUpdate
 
 Base.metadata.create_all(engine)
 
 app = FastAPI(title="Library API")
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 def find_book(db: Session, book_id: int):
     book = db.get(models.Book, book_id)
