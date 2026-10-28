@@ -1,3 +1,7 @@
+import models
+import auth
+from schemas import Book, BookCreate, BookUpdate
+
 from fastapi import FastAPI, HTTPException, status, Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session 
@@ -9,6 +13,7 @@ from schemas import Book, BookCreate, BookUpdate
 Base.metadata.create_all(engine)
 
 app = FastAPI(title="Library API")
+app.include_router(auth.router)
 
 def find_book(db: Session, book_id: int):
     book = db.get(models.Book, book_id)
